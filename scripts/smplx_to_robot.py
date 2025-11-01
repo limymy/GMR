@@ -33,7 +33,7 @@ if __name__ == "__main__":
         choices=["unitree_g1", "unitree_g1_with_hands", "unitree_h1", "unitree_h1_2",
                  "booster_t1", "booster_t1_29dof","stanford_toddy", "fourier_n1", 
                 "engineai_pm01", "kuavo_s45", "hightorque_hi", "galaxea_r1pro", "berkeley_humanoid_lite", "booster_k1",
-                "pnd_adam_lite", "openloong", "tienkung"],
+                "pnd_adam_lite", "openloong", "tienkung", "bhr8fc2"],
         default="unitree_g1",
     )
     
@@ -85,6 +85,7 @@ if __name__ == "__main__":
         actual_human_height=actual_human_height,
         src_human="smplx",
         tgt_robot=args.robot,
+        use_velocity_limit=True,
     )
     
     robot_motion_viewer = RobotMotionViewer(robot_type=args.robot,
