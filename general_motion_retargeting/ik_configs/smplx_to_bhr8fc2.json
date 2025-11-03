@@ -4,7 +4,7 @@
     "ground_height": -0.05,
     "human_height_assumption": 1.8,
     "use_ik_match_table1": true,
-    "use_ik_match_table2": false,
+    "use_ik_match_table2": true,
     "human_scale_table": {
         "pelvis": 0.95,
 
@@ -20,7 +20,7 @@
     "ik_match_table1": {
         "torso": [
             "pelvis",
-            50,
+            20,
             10,
             [
                 0.0,
@@ -68,7 +68,7 @@
         ],
         "lfoot": [
             "left_foot",
-            50,
+            100,
             10,
             [
                 0.0,
@@ -116,7 +116,7 @@
         ],
         "rfoot": [
             "right_foot",
-            50,
+            100,
             10,
             [
                 0.0,

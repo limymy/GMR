@@ -19,7 +19,9 @@ class GeneralMotionRetargeting:
         damping: float=5e-1, # change from 1e-1 to 1e-2.
         verbose: bool=True,
         use_velocity_limit: bool=False,
+        initial_qpos: np.ndarray = None,
     ) -> None:
+        self.initial_qpos = initial_qpos
 
         # load the robot model
         self.xml_file = str(ROBOT_XML_DICT[tgt_robot])
@@ -105,7 +107,7 @@ class GeneralMotionRetargeting:
         self.ground_offset = 0.0
 
     def setup_retarget_configuration(self):
-        self.configuration = mink.Configuration(self.model)
+        self.configuration = mink.Configuration(self.model, q=self.initial_qpos)
     
         self.tasks1 = []
         self.tasks2 = []

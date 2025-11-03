@@ -121,7 +121,7 @@
             <geom size="0.05 0.05 0.16" pos="0 0 -0.23" type="box" rgba="0.752941 0.752941 0.752941 1"/>
             <body name="rcalf" pos="0 0 -0.375">
               <inertial pos="0.003761 0 -0.143175" quat="0.99988 -0.000702889 -0.0153326 0.00193635" mass="2.51427" diaginertia="0.0176306 0.017018 0.00210037"/>
-              <joint name="rknee" pos="0 0 0" axis="0 1 0" range="0.0 1.8"/>
+              <joint name="rknee" pos="0 0 0" axis="0 1 0" range="0.087 1.8"/>
               <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.752941 0.752941 0.752941 1" mesh="rcalf"/>
               <geom size="0.04 0.04 0.1" pos="0 0 -0.18" type="box" rgba="0.752941 0.752941 0.752941 1"/>
               <body name="rankle" pos="0 0 -0.35">
@@ -155,7 +155,7 @@
             <geom size="0.05 0.05 0.16" pos="0 0 -0.23" type="box" rgba="0.752941 0.752941 0.752941 1"/>
             <body name="lcalf" pos="0 0 -0.375">
               <inertial pos="0.003757 -0.00029 -0.143175" quat="0.999882 0.000728441 -0.0153344 0.000562778" mass="2.51427" diaginertia="0.0176306 0.017019 0.00210036"/>
-              <joint name="lknee" pos="0 0 0" axis="0 1 0" range="0.0 1.8"/>
+              <joint name="lknee" pos="0 0 0" axis="0 1 0" range="0.087 1.8"/> 
               <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.752941 0.752941 0.752941 1" mesh="lcalf"/>
               <geom size="0.04 0.04 0.1" pos="0 0 -0.18" type="box" rgba="0.752941 0.752941 0.752941 1"/>
               <body name="lankle" pos="0 0 -0.35">

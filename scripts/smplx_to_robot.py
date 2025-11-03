@@ -4,10 +4,12 @@ import os
 import time
 
 import numpy as np
+import mujoco as mj
 
 from general_motion_retargeting import GeneralMotionRetargeting as GMR
 from general_motion_retargeting import RobotMotionViewer
 from general_motion_retargeting.utils.smpl import load_smplx_file, get_smplx_data_offline_fast
+from general_motion_retargeting.params import ROBOT_XML_DICT
 
 from rich import print
 
@@ -79,6 +81,27 @@ if __name__ == "__main__":
     tgt_fps = 30
     smplx_data_frames, aligned_fps = get_smplx_data_offline_fast(smplx_data, body_model, smplx_output, tgt_fps=tgt_fps)
     
+    initial_qpos = None
+    if args.robot == "bhr8fc2":
+        # Prepare a valid initial qpos for the robot to avoid joint limit violations.
+        # This is a more robust approach than modifying the GMR object after initialization.
+        robot_xml_path = str(ROBOT_XML_DICT[args.robot])
+        temp_model = mj.MjModel.from_xml_path(robot_xml_path)
+        temp_data = mj.MjData(temp_model)
+        initial_qpos = temp_data.qpos.copy() # Or use np.zeros(temp_model.nq) if no 'home' keyframe
+        
+        # Find joint indices by name and set their initial positions
+        try:
+            rknee_idx = mj.mj_name2id(temp_model, mj.mjtObj.mjOBJ_JOINT, "rknee")
+            lknee_idx = mj.mj_name2id(temp_model, mj.mjtObj.mjOBJ_JOINT, "lknee")
+            
+            # Set knee joints to a value within their allowed range, e.g., 0.087
+            initial_qpos[temp_model.jnt_qposadr[rknee_idx]] = 0.087
+            initial_qpos[temp_model.jnt_qposadr[lknee_idx]] = 0.087
+            print(f"[INFO] Custom initial qpos created. Setting 'rknee' and 'lknee' to 0.087.")
+        except ValueError:
+            print("[WARNING] Could not find 'rknee' or 'lknee' joints to set initial position.")
+
    
     # Initialize the retargeting system
     retarget = GMR(
@@ -86,6 +109,7 @@ if __name__ == "__main__":
         src_human="smplx",
         tgt_robot=args.robot,
         use_velocity_limit=True,
+        initial_qpos=initial_qpos,
     )
     
     robot_motion_viewer = RobotMotionViewer(robot_type=args.robot,
