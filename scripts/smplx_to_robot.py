@@ -35,7 +35,7 @@ if __name__ == "__main__":
         choices=["unitree_g1", "unitree_g1_with_hands", "unitree_h1", "unitree_h1_2",
                  "booster_t1", "booster_t1_29dof","stanford_toddy", "fourier_n1", 
                 "engineai_pm01", "kuavo_s45", "hightorque_hi", "galaxea_r1pro", "berkeley_humanoid_lite", "booster_k1",
-                "pnd_adam_lite", "openloong", "tienkung", "bhr8fc2"],
+                "pnd_adam_lite", "openloong", "tienkung", "bhr8fc2", "fourier_gr3"],
         default="unitree_g1",
     )
     
@@ -89,12 +89,12 @@ if __name__ == "__main__":
         temp_model = mj.MjModel.from_xml_path(robot_xml_path)
         temp_data = mj.MjData(temp_model)
         initial_qpos = temp_data.qpos.copy() # Or use np.zeros(temp_model.nq) if no 'home' keyframe
-        
+
         # Find joint indices by name and set their initial positions
         try:
             rknee_idx = mj.mj_name2id(temp_model, mj.mjtObj.mjOBJ_JOINT, "rknee")
             lknee_idx = mj.mj_name2id(temp_model, mj.mjtObj.mjOBJ_JOINT, "lknee")
-            
+
             # Set knee joints to a value within their allowed range, e.g., 0.087
             initial_qpos[temp_model.jnt_qposadr[rknee_idx]] = 0.087
             initial_qpos[temp_model.jnt_qposadr[lknee_idx]] = 0.087
@@ -102,7 +102,7 @@ if __name__ == "__main__":
         except ValueError:
             print("[WARNING] Could not find 'rknee' or 'lknee' joints to set initial position.")
 
-   
+
     # Initialize the retargeting system
     retarget = GMR(
         actual_human_height=actual_human_height,
@@ -125,11 +125,11 @@ if __name__ == "__main__":
     fps_start_time = time.time()
     fps_display_interval = 2.0  # Display FPS every 2 seconds
     
+    qpos_list = []
     if args.save_path is not None:
         save_dir = os.path.dirname(args.save_path)
         if save_dir:  # Only create directory if it's not empty
             os.makedirs(save_dir, exist_ok=True)
-        qpos_list = []
     
     # Start the viewer
     i = 0
@@ -167,6 +167,7 @@ if __name__ == "__main__":
             human_pos_offset=np.array([0.0, 0.0, 0.0]),
             show_human_body_name=False,
             rate_limit=args.rate_limit,
+            follow_camera=False,
         )
         if args.save_path is not None:
             qpos_list.append(qpos)
